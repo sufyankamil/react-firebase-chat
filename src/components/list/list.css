@@ -1,0 +1,31 @@
+.list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.small-screen {
+  display: none;
+}
+
+@media screen and (max-width: 1075px) {
+  .list {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .list {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .list {
+    display: none;
+  }
+
+  .small-screen {
+    display: block;
+  }
+}
