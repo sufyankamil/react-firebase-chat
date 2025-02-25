@@ -1,5 +1,12 @@
 import React from 'react'
 import './detail.css'
+import {auth} from "../lib/firebase.js";
+
+const handleLogout = () => {
+    if(window.confirm('Are you sure you want to logout?')){
+        auth.signOut();
+    }
+}
 
 export default function Detail() {
     return (
@@ -50,7 +57,7 @@ export default function Detail() {
                     </div>
                 </div>
                 <button>Block User</button>
-                <button className='logout'>Logout</button>
+                <button className='logout' onClick={ () => handleLogout()}>Logout</button>
             </div>
         </div>
     )
