@@ -9,8 +9,8 @@ export default function Detail() {
     const { chatId, user, changeBlockedStatus, changeChat } = useChatStore();
     const { currentUser } = useUserStore();
 
-    const [fetchedUser, setFetchedUser] = useState(user); // Store user if lost
-    const [receiverBlockedStatus, setReceiverBlockedStatus] = useState(false); // Local state for block status
+    const [fetchedUser, setFetchedUser] = useState(user);
+    const [receiverBlockedStatus, setReceiverBlockedStatus] = useState(false);
 
     // (Fetch user and blocked status) again if lost on refresh
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function Detail() {
                             if (userSnap.exists()) {
                                 const userData = userSnap.data();
                                 setFetchedUser(userData);
-                                await changeChat(chatId, userData); // 🔹 Update store
+                                await changeChat(chatId, userData);
 
                                 // Check if current user is blocked
                                 setReceiverBlockedStatus(userData.blocked?.includes(currentUser.id));
@@ -79,8 +79,8 @@ export default function Detail() {
                     });
                 }
 
-                setReceiverBlockedStatus(!receiverBlockedStatus); // Update state
-                changeBlockedStatus(); // Update store
+                setReceiverBlockedStatus(!receiverBlockedStatus);
+                changeBlockedStatus();
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);

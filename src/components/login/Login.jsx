@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './login.css';
 import { toast } from 'react-toastify';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail  } from 'firebase/auth';
 import { auth, db } from '../lib/firebase.js';
 import { doc, setDoc } from 'firebase/firestore';
 
@@ -10,15 +10,33 @@ export default function Login() {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 840);
     const [isTooSmall, setIsTooSmall] = useState(window.innerWidth < 295);
     const [loading, setLoading] = useState(false);
+    const [cooldown, setCooldown] = useState(false);
+    const [cooldownTime, setCooldownTime] = useState(0);
 
     useEffect(() => {
+        // Cooldown Timer Logic
+        let timer;
+        if (cooldown && cooldownTime > 0) {
+            timer = setInterval(() => {
+                setCooldownTime(prev => prev - 1);
+            }, 1000);
+        } else if (cooldownTime === 0) {
+            setCooldown(false); // Re-enable button after cooldown
+        }
+
         const handleResize = () => {
             setIsMobile(window.innerWidth < 840);
             setIsTooSmall(window.innerWidth < 295);
         };
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+
+        // Cleanup Function
+        return () => {
+            clearInterval(timer);
+            window.removeEventListener('resize', handleResize);
+        };
+
+    }, [cooldown, cooldownTime]);
 
     const toggleView = () => setShowSignup(!showSignup);
 
@@ -69,6 +87,33 @@ export default function Login() {
         }
     };
 
+    const handleForgotPassword = async (e) => {
+        e.preventDefault();
+        if (cooldown) return;
+        setLoading(true);
+
+        // Manually get the email input field value
+        const email = document.querySelector('input[name="Email"]')?.value;
+
+        if (!email) {
+            toast.error("Please enter your email");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+            toast.success("Password reset email sent successfully");
+            // Start Cooldown
+            setCooldown(true);
+            setCooldownTime(120); // 2 minutes
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className='login' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {!isMobile || !showSignup ? (
@@ -79,7 +124,14 @@ export default function Login() {
                         <input type='email' placeholder='Email' name='Email' />
                         <input type='password' placeholder='Password' name='Password' />
                         <button disabled={loading}>{loading ? 'Loading...' : 'Sign In'}</button>
-                        <span>Forgot Password?</span>
+                        <button
+                            type="button"
+                            onClick={handleForgotPassword}
+                            disabled={cooldown || loading}
+                        >
+                            Forgot Password?
+                        </button>
+
                     </form>
                 </div>
             ) : null}

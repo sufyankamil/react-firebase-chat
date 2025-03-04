@@ -88,9 +88,3 @@
     }
   }
 }
-
-@media screen and (max-width: 720px) {
-  .chatList {
-    display: none;
-  }
-}
