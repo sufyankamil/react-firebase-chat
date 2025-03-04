@@ -5,6 +5,10 @@ import {useUserStore} from "../../lib/userStore.js";
 export default function UserInformation() {
     const {currentUser} = useUserStore();
 
+    const handleEdit = () => {
+        window.alert('User will be able to edit their profile here');
+    }
+
     return (
         <div className='userInformation'>
             <div className="user">
@@ -14,9 +18,9 @@ export default function UserInformation() {
                 </h2>
             </div>
             <div className="icons">
-                <img src="./more.png" alt="" className="icon" />
-                <img src="./video.png" alt="" className="icon" />
-                <img src="./edit.png" alt="" className="icon" />
+                <img src="./more.png" alt="" className="icon" onClick={
+                    handleEdit
+                }/>
             </div>
         </div>
     )

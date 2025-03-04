@@ -3,37 +3,54 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+html, body {
+  height: 100%; /* Ensures full height coverage */
+  overflow: hidden;
 }
 
 body {
-  /* background-image: url("/public/bg.jpg"); */
-  background-color: bisque;
+  background-color: #660066;
+  backdrop-filter: blur(10px) saturate(120%);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh
 }
 
+
+/*.container {*/
+/*  width: 100vw;*/
+/*  min-height: 100vh; !* Ensures it doesn't shrink *!*/
+/*  display: flex;*/
+/*  background-color: rgba(22, 7, 7, 0.212);*/
+/*  border: 2px solid rgba(0, 0, 0, 0.2);*/
+/*  backdrop-filter: blur(10px) saturate(100%);*/
+/*  flex-direction: column; !* Ensures content stacks properly *!*/
+/*}*/
+
 .container {
-  width: 80vw;
+  width: 100vw;
   height: 90vh;
   display: flex;
-  background-color: rgba(22, 7, 7, 0.212);
   border: 2px solid rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px) saturate(100%);
+  background-color: rgba(245, 245, 245, 0.6);
+  backdrop-filter: blur(10px) saturate(120%);
+
+}
+
+
+@media screen and (max-width: 716px) {
+  .container {
+    flex-direction: column; /* Ensures content stacks properly */
+  }
 }
 
 @media screen and (max-width: 370px) {
   .container {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
   }
-}
-
-.loading {
-  padding: 50px;
-  font-size: 30px;
-  border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.1);
 }

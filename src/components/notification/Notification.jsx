@@ -1,7 +1,6 @@
-import React from 'react'
 import { ToastContainer } from 'react-toastify'
 
-export default function Nofitication() {
+export default function Notification() {
     return (
         <div className='nofitication'>
             <ToastContainer
