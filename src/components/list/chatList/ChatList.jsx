@@ -89,7 +89,8 @@ export default function ChatList() {
             {filteredChats.map((chat) => (
                 <div
                     className="item"
-                    key={chat.chatId}
+                    // key={chat.chatId}
+                    key={`${chat.chatId}-${chat.user.id}`}
                     onClick={() => handleSelect(chat)}
                     style={{
                         backgroundColor: chat?.isSeen ? "transparent" : "#5183fe",
